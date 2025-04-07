@@ -5,7 +5,7 @@ import { debounce } from "../libs/action";
 import BookSkeleton from "../components/BookSkeleton";
 import Pagination from "../components/Pagination";
 const Home = () => {
-  const { books, loading, setSearch, search } = useBooks();
+  const { books, loading, setSearch, search, setPage } = useBooks();
 
   const handleSearch = debounce((e: FormEvent<HTMLInputElement>) => {
     const search_input = (e.target as HTMLInputElement).value.trim();
@@ -16,6 +16,8 @@ const Home = () => {
     } else {
       params.set("search", search_input);
     }
+    setPage("1");
+    params.has("page") && params.delete("page");
     const queryString = params.toString();
     const newUrl = queryString
       ? `${window.location.pathname}?${queryString}`

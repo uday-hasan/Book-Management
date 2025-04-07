@@ -21,10 +21,13 @@ const BookProvider = ({ children }: { children: ReactNode }) => {
         const params = new URLSearchParams(window.location.search);
         const pageParam = params.get("page") || "1";
         setPage(pageParam);
-        // setPageParam(newUrl);
-        const response = await fetch(
-          "https://gutendex.com/books" + search + `?page=${pageParam}`
-        );
+        const trimmed = params.get("search")?.replace(" ", "+");
+
+        const url = trimmed
+          ? `https://gutendex.com/books?search=${trimmed}&page=${pageParam}`
+          : `https://gutendex.com/books?page=${pageParam}`;
+
+        const response = await fetch(url);
         const { results, count } = await response.json();
         setBooks(results);
         setBookCount(count);
